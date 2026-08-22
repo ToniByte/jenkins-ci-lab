@@ -19,7 +19,7 @@ pipeline {
                       -v "$WORKSPACE:/app" \
                       -w /app \
                       python:3.12-slim \
-                      sh -c "pip install -r app/requirements.txt && pytest app/"
+                      sh -c "pip install -r requirements.txt && pytest"
                 '''
             }
         }
