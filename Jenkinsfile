@@ -4,7 +4,11 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                checkout scm
+                deleteDir()
+
+                git branch: 'main',
+                    credentialsId: 'github-ssh',
+                    url: 'git@github.com:tonibyte/jenkins-ci-lab.git'
             }
         }
 
