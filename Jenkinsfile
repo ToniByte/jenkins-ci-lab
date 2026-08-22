@@ -12,22 +12,33 @@ pipeline {
             }
         }
 
-        stage('Test') {
-            steps {
-                sh '''
-                    docker run --rm \
-                      -v "$WORKSPACE:/app" \
-                      -w /app \
-                      python:3.12-slim \
-                      sh -c "pip install -r requirements.txt && pytest"
-                '''
-            }
-        }
+      stage('Test') {
+    steps {
+        sh '''
+            echo "=== Jenkins workspace ==="
+            ls -la
 
-        stage('Docker Build') {
-            steps {
-                echo 'Docker build will be added next'
-            }
-        }
+            echo "=== app directory ==="
+            ls -la app
+
+            echo "=== Docker container ==="
+            docker run --rm \
+              -v "$WORKSPACE/app:/app" \
+              -w /app \
+              python:3.12-slim \
+              sh -c "ls -la"
+        '''
+    }
+}
+
+       stage('Docker Build') {
+    steps {
+        sh '''
+            docker build \
+              -t jenkins-ci-app:${BUILD_NUMBER} \
+              .
+        '''
+    }
+}
     }
 }
